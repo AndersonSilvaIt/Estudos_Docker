@@ -1,4 +1,6 @@
+using APIPessoa.Business.Interfaces;
 using APIPessoa.Data;
+using APIPessoa.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +18,16 @@ builder.Services.AddDbContext<Contexto>(options =>
     .CommandTimeout(10));
 });
 
+builder.Services.AddScoped<IPessoaRepository, PessoaRepository>();
+
 var app = builder.Build();
+
+// Aplica automaticamente as migrations ao iniciar a aplicação
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<Contexto>();
+    dbContext.Database.Migrate();
+}
 
 app.UseSwagger();
 app.UseSwaggerUI();

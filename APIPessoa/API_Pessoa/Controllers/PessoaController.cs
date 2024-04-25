@@ -1,5 +1,6 @@
 ﻿using API_Pessoa.ViewModels;
 using APIPessoa.Business.Interfaces;
+using APIPessoa.Business.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_Pessoa.Controllers
@@ -16,29 +17,44 @@ namespace API_Pessoa.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<PessoaVM>> Obter()
+        public async Task<ActionResult<List<PessoaVM>>> Obter()
         {
-            List<PessoaVM> listPessoa = new List<PessoaVM>
-            {
-                new PessoaVM{ Id = 1, Nome = "Pessoa 1", Idade = 15 },
-                new PessoaVM{ Id = 2, Nome = "Pessoa 2", Idade = 18 },
-                new PessoaVM{ Id = 3, Nome = "Pessoa 3", Idade = 25 }
-            };
+            var list = await _pessoaRepository.Listar();
 
-            return Ok(listPessoa);
+            return Ok(list);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<PessoaVM> ObterPorId(int id)
+        public async Task<ActionResult<PessoaVM>> ObterPorId(int id)
         {
-            var pessoa = new PessoaVM
-            {
-                Id = 1,
-                Nome = "Pessoa 1",
-                Idade = 15
-            };
+            var pessoa = await _pessoaRepository.ObterPorId(id);
 
             return Ok(pessoa);
         }
+
+        [HttpPost]
+        public async Task<ActionResult<Pessoa>> Adicionar(Pessoa pessoa)
+        {
+            var pessoaAdd = await _pessoaRepository.Adicionar(pessoa);
+
+            return Ok(pessoaAdd);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<bool>> Atualizar(Pessoa pessoa)
+        {
+            var update = await _pessoaRepository.Atualizar(pessoa);
+
+            return Ok(update);
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult<bool>> Deletar(int id)
+        {
+            var update = await _pessoaRepository.Remover(id);
+
+            return Ok(update);
+        }
+
     }
 }
