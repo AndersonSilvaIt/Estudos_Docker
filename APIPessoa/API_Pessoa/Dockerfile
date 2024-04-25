@@ -8,17 +8,17 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["APIPessoa.csproj", "."]
-RUN dotnet restore "./APIPessoa.csproj"
+COPY ["API_Pessoa.csproj", "."]
+RUN dotnet restore "./API_Pessoa.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "./APIPessoa.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./API_Pessoa.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./APIPessoa.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./API_Pessoa.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "APIPessoa.dll"]
+ENTRYPOINT ["dotnet", "API_Pessoa.dll"]
