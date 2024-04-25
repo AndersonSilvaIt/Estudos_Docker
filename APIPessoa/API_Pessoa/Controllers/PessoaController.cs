@@ -19,5 +19,18 @@ namespace API_Pessoa.Controllers
 
             return Ok(listPessoa);
         }
+
+        [HttpGet("{id}")]
+        public ActionResult<PessoaVM> ObterPorId(int id)
+        {
+            var pessoa = new PessoaVM
+            {
+                Id = 1,
+                Nome = "Pessoa 1",
+                Idade = 15
+            };
+
+            return Ok(pessoa);
+        }
     }
 }
