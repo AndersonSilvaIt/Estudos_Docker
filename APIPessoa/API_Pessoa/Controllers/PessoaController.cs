@@ -1,4 +1,5 @@
 ﻿using API_Pessoa.ViewModels;
+using APIPessoa.Business.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_Pessoa.Controllers
@@ -7,6 +8,13 @@ namespace API_Pessoa.Controllers
     [Route("[controller]")]
     public class PessoaController : ControllerBase
     {
+        private readonly IPessoaRepository _pessoaRepository;
+
+        public PessoaController(IPessoaRepository pessoaRepository)
+        {
+            _pessoaRepository = pessoaRepository;
+        }
+
         [HttpGet]
         public ActionResult<List<PessoaVM>> Obter()
         {
