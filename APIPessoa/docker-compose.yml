@@ -20,3 +20,9 @@ services:
       POSTGRES_DB: pessoadb
     ports:
       - "5432:5432"
+    volumes:
+      - /C/Docker:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+    driver: local
